@@ -1,0 +1,70 @@
+<script lang="ts">
+	import { env } from '$env/dynamic/public';
+
+	import { Elements, EmbeddedCheckout } from '$lib/index';
+	import { loadStripe, type Stripe, type StripeElements } from '@stripe/stripe-js';
+	import { onMount } from 'svelte';
+
+	let stripe: Stripe | null;
+
+	let clientSecretEmbed: string | null = null;
+
+	let elements: StripeElements;
+
+	async function createEmbeddedCheckout() {
+		const response = await fetch('/create-checkout', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({})
+		});
+		const r = await response.json();
+
+		return r.clientSecretEmbed;
+	}
+
+	onMount(async () => {
+		stripe = await loadStripe(env.PUBLIC_STRIPE_KEY);
+		clientSecretEmbed = await createEmbeddedCheckout();
+	});
+</script>
+
+<div class="flex flex-col place-items-center">
+	<p class="poppins-semibold mt-6 text-[#0d4a80]">ONE-TIME DONATION</p>
+	<div class="container md:p-5 flex gap-8 flex-wrap justify-center">
+		{#if stripe}
+			<p>Thank you for donating to Dainava!</p>
+			<p class="pb-5">
+				Please enter the amount you wish to donate. You will receive a receipt for your donation via
+				email.
+			</p>
+			<Elements {stripe} bind:elements>
+				{#if clientSecretEmbed}
+					<EmbeddedCheckout {stripe} clientSecret={clientSecretEmbed}></EmbeddedCheckout>
+				{/if}
+			</Elements>
+		{/if}
+	</div>
+</div>
+
+<style>
+	@font-face {
+		src: url('/Poppins-SemiBold.ttf') format('truetype');
+		font-family: 'Poppins', sans-serif;
+		font-weight: 400;
+		font-style: normal;
+	}
+
+	.container {
+		max-width: 1024px;
+		background-color: white;
+	}
+
+	.poppins-semibold {
+		font-family: 'Poppins', sans-serif;
+		font-weight: 600;
+		font-style: normal;
+		font-size: 35px;
+	}
+</style>
