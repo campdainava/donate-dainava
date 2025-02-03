@@ -6,15 +6,16 @@
 	let campaignId: string | null | undefined = undefined;
 
 	function addQueryParams(url: string, params: Record<string, string> = {}) {
-		if (!campaignId) {
+		if (Object.keys(params).length === 0 && !campaignId) {
 			return url;
 		}
-
 		const searchparams = new URLSearchParams();
 		for (const key in params) {
 			searchparams.set(key, params[key]);
 		}
-		searchparams.set('cid', campaignId);
+		if (campaignId) {
+			searchparams.set('cid', campaignId);
+		}
 		return url + '?' + searchparams.toString();
 	}
 
