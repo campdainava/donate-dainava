@@ -1,46 +1,44 @@
 <script lang="ts">
 	import '../app.css';
-	import { PUBLIC_DAINAVA_URL, PUBLIC_DAINAVA_WAYS_TO_DONATE_URL } from '$env/static/public';
+	let { data, children }: LayoutProps = $props();
 </script>
 
 <main class="flex flex-col flex-1">
 	<header class="h-[75px] bg-[#0d4a80] flex place-items-center flex-none">
 		<span class="flex gap-x-4 mx-4 mr-12 flex-none">
-			<a href={PUBLIC_DAINAVA_URL}>
+	
+			<a href={data.info?.DAINAVA_URL}>
 				<img
 					class="flex-none hidden md:inline"
 					style="height:39px;object-fit:cover"
 					src="/Dainava_saule.webp"
-					alt="asdf"
 				/><img
 					class="flex-none hidden md:inline"
 					style="height:39px;object-fit:cover"
 					src="/Dainava_white_orig.webp"
-					alt="asdf"
 				/>
 				<img
 					class="flex-none md:hidden"
 					style="height:20px;object-fit:cover"
 					src="/Dainava_white_orig.webp"
-					alt="asdf"
 				/>
 			</a>
 		</span>
 		<span class="flex flex-none gap-x-4">
 			<a
-				href={PUBLIC_DAINAVA_URL}
+				href={data.info?.DAINAVA_URL}
 				class=" poppins-semibold text-base uppercase text-white hover:text-[#f4ce50] hidden md:inline"
 				>Home</a
 			>
 			<a
-				href={PUBLIC_DAINAVA_WAYS_TO_DONATE_URL}
+				href={data.info?.DAINAVA_WAYS_TO_DONATE_URL}
 				class=" poppins-semibold text-base uppercase text-white hover:text-[#f4ce50]"
 				>Other ways to donate</a
 			>
 		</span>
 	</header>
 
-	<slot />
+	{@render children()}
 
 	<footer
 		class="shrink-0 text-[#f4ce50] text-center poppins-semibold flex place-items-center flex-col justify-center p-4"

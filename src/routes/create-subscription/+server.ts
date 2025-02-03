@@ -1,12 +1,12 @@
 import Stripe from 'stripe';
 import { env } from '$env/dynamic/private';
-import { env as public_env } from '$env/dynamic/public';
+
 import { json } from '@sveltejs/kit';
 
 // initialize Stripe
-const stripe = new Stripe(env.SECRET_STRIPE_KEY);
+const stripe = new Stripe(env.SECRET_SEC_STRIPE_KEY);
 
-const return_url = public_env.PUBLIC_THANKS_URL;
+const return_url = env.THANKS_URL;
 
 // handle POST /create-payment-intent
 export async function POST({ request }) {

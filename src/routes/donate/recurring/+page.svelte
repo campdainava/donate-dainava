@@ -1,16 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { env } from '$env/dynamic/public';
-
 	import { Elements, EmbeddedCheckout } from '$lib/index';
 	import { loadStripe, type Stripe, type StripeElements } from '@stripe/stripe-js';
-	import { onMount } from 'svelte';
 
-	let stripe: Stripe | null;
+	const { data }: PageProps = $props();
 
-	let clientSecretEmbed: string | null = null;
-
-	let elements: StripeElements;
+	let stripe: Stripe | undefined = $state();
+	let clientSecretEmbed: string | undefined = $state();
+	let elements: StripeElements | undefined = $state();
 
 	async function createEmbeddedCheckout() {
 		const amount = $page.url.searchParams.get('amount');
@@ -24,14 +21,17 @@
 				amount
 			})
 		});
-		const r = await response.json();
-
-		return r.clientSecretEmbed;
+		const { clientSecretEmbed } = await response.json();
+		return clientSecretEmbed;
 	}
 
-	onMount(async () => {
-		stripe = await loadStripe(env.PUBLIC_STRIPE_KEY);
-		clientSecretEmbed = await createEmbeddedCheckout();
+	$effect(() => {
+		if (data.info?.STRIPE_PUBLIC_KEY) {
+			(async () => {
+				stripe = (await loadStripe(data.info?.STRIPE_PUBLIC_KEY)) || undefined;
+				clientSecretEmbed = await createEmbeddedCheckout();
+			})();
+		}
 	});
 </script>
 

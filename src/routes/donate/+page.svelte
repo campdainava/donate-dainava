@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Card from '$lib/dainava/Card.svelte';
-	import { env } from '$env/dynamic/public';
 
 	const buttons = [
 		{ label: '$2/mo', url: '/donate/recurring?amount=2' },
@@ -10,6 +9,7 @@
 		{ label: '$50/mo', url: '/donate/recurring?amount=50' },
 		{ label: '$100/mo', url: '/donate/recurring?amount=100' }
 	];
+	const { data }: PageProps = $props();
 </script>
 
 <div class="flex flex-col place-items-center">
@@ -26,7 +26,7 @@
 		<Card
 			cardClass="w-[350px]"
 			imgSrc="/IMG_5417.jpeg"
-			href={env.PUBLIC_SUBSCRIPTION_PORTAL_URL}
+			href={data.info?.SUBSCRIPTION_PORTAL_URL}
 			{buttons}
 		>
 			<p slot="title">Monthly Donation</p>
