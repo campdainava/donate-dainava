@@ -2,6 +2,7 @@
 	import { Elements, EmbeddedCheckout } from '$lib/index';
 	import { loadStripe, type Stripe, type StripeElements } from '@stripe/stripe-js';
 	import type { PageProps } from '../$types';
+	import { browser } from '$app/environment';
 
 	const { data }: PageProps = $props();
 
@@ -9,16 +10,22 @@
 	let clientSecretEmbed: string | undefined = $state();
 	let elements: StripeElements | undefined = $state();
 
+	let campaignId: string | null | undefined = undefined;
 	async function createEmbeddedCheckout() {
 		const response = await fetch('/create-checkout', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
 			},
-			body: JSON.stringify({})
+			body: JSON.stringify({ campaignId })
 		});
 		const { clientSecretEmbed } = await response.json();
 		return clientSecretEmbed;
+	}
+
+	if (browser) {
+		const urlParams = new URLSearchParams(window.location.search);
+		campaignId = urlParams.get('cid');
 	}
 
 	$effect(() => {

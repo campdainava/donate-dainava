@@ -11,7 +11,7 @@ const return_url = env.THANKS_URL;
 // handle POST /create-payment-intent
 export async function POST({ request }) {
 	let id: string | undefined = '';
-	let { amount }
+	let { amount, campaignId }
 		= await request.json();
 	if (!amount) {
 		throw new Error("Invalid")
@@ -33,7 +33,15 @@ export async function POST({ request }) {
 	if (!id) {
 		throw new Error("Invalid")
 	}
+
+	const metadata: { [id: string]: string } = {};
+
+	if (campaignId) {
+		metadata.campaignId = campaignId;
+	}
+
 	const session = await stripe.checkout.sessions.create({
+		metadata,
 		ui_mode: 'embedded',
 		line_items: [
 			{

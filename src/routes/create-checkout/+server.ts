@@ -8,8 +8,16 @@ const stripe = new Stripe(env.SECRET_SEC_STRIPE_KEY);
 const return_url = env.THANKS_URL;
 
 // handle POST /create-payment-intent
-export async function POST() {
+export async function POST({ request }) {
+	const metadata: { [id: string]: string } = {};
+
+	const body = await request.json();
+	if (body.campaignId) {
+		metadata.campaignId = body.campaignId;
+	}
+
 	const session = await stripe.checkout.sessions.create({
+		metadata,
 		ui_mode: 'embedded',
 		line_items: [
 			{

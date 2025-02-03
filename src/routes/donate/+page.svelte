@@ -1,15 +1,38 @@
 <script lang="ts">
 	import Card from '$lib/dainava/Card.svelte';
+	import type { PageProps } from '../$types';
+	import { browser } from '$app/environment';
+
+	let campaignId: string | null | undefined = undefined;
+
+	function addQueryParams(url: string, params: Record<string, string> = {}) {
+		if (!campaignId) {
+			return url;
+		}
+
+		const searchparams = new URLSearchParams();
+		for (const key in params) {
+			searchparams.set(key, params[key]);
+		}
+		searchparams.set('cid', campaignId);
+		return url + '?' + searchparams.toString();
+	}
+
+	const { data }: PageProps = $props();
+	if (browser) {
+		const urlParams = new URLSearchParams(window.location.search);
+
+		campaignId = urlParams.get('cid');
+	}
 
 	const buttons = [
-		{ label: '$2/mo', url: '/donate/recurring?amount=2' },
-		{ label: '$5/mo', url: '/donate/recurring?amount=5' },
-		{ label: '$10/mo', url: '/donate/recurring?amount=10' },
-		{ label: '$25/mo', url: '/donate/recurring?amount=25' },
-		{ label: '$50/mo', url: '/donate/recurring?amount=50' },
-		{ label: '$100/mo', url: '/donate/recurring?amount=100' }
+		{ label: '$2/mo', url: addQueryParams('/donate/recurring', { amount: '2' }) },
+		{ label: '$5/mo', url: addQueryParams('/donate/recurring', { amount: '5' }) },
+		{ label: '$10/mo', url: addQueryParams('/donate/recurring', { amount: '10' }) },
+		{ label: '$25/mo', url: addQueryParams('/donate/recurring', { amount: '25' }) },
+		{ label: '$50/mo', url: addQueryParams('/donate/recurring', { amount: '50' }) },
+		{ label: '$100/mo', url: addQueryParams('/donate/recurring', { amount: '100' }) }
 	];
-	const { data }: PageProps = $props();
 </script>
 
 <div class="flex flex-col place-items-center">
@@ -18,7 +41,7 @@
 		<div class="flex w-full place-items-center flex-col">
 			<p>Thank you for donating to Dainava!</p>
 		</div>
-		<Card cardClass="w-[350px]" imgSrc="/IMG_5013.jpeg" href="/donate/one-time">
+		<Card cardClass="w-[350px]" imgSrc="/IMG_5013.jpeg" href={addQueryParams('/donate/one-time')}>
 			<p slot="title">One Time Donation</p>
 			<p slot="description" class="h-[75px]">You can make a single donation here.</p>
 			<p slot="buttonLabel">Donate</p>
