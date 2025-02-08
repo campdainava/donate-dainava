@@ -16,7 +16,7 @@ ENV NODE_ENV="production"
 FROM base AS build
 
 # Install packages needed to build node modules
-RUN apk update && apk add python make gcc g++
+RUN apk update && apk add python3 make gcc g++
 
 # Install node modules
 COPY --link .npmrc package-lock.json package.json ./
