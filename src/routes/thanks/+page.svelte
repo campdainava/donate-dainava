@@ -31,7 +31,7 @@
 <div
 	class="py-20 flex flex-col flex-1 background text-wrap text-5xl sm:text-7xl md:text-9xl pacifico-regular text-white place-items-center justify-center gap-20"
 >
-	<img class="bgimg" src="/oak2.jpg" alt="Dainava Oak Tree" />
+	<img class="bgimg" src="/tn_oak.jpg" alt="Dainava Oak Tree" />
 
 	<div
 		class="text-outline flex-none text-center"

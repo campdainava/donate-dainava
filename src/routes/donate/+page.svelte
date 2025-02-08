@@ -36,20 +36,20 @@
 	];
 </script>
 
-<div class="flex flex-col place-items-center">
+<div class="flex grow flex-col place-items-center">
 	<p class="poppins-semibold mt-6 text-[#0d4a80]">DONATE</p>
 	<div class="container p-5 flex gap-8 flex-wrap justify-center">
 		<div class="flex w-full place-items-center flex-col">
 			<p>Thank you for donating to Dainava!</p>
 		</div>
-		<Card cardClass="w-[350px]" imgSrc="/IMG_5013.jpeg" href={addQueryParams('/donate/one-time')}>
+		<Card cardClass="w-[350px]" imgSrc="/tn_IMG_5013.jpg" href={addQueryParams('/donate/one-time')}>
 			<p slot="title">One Time Donation</p>
 			<p slot="description" class="h-[75px]">You can make a single donation here.</p>
 			<p slot="buttonLabel">Donate</p>
 		</Card>
 		<Card
 			cardClass="w-[350px]"
-			imgSrc="/IMG_5417.jpeg"
+			imgSrc="/tn_IMG_5417.jpg"
 			href={data.info?.SUBSCRIPTION_PORTAL_URL}
 			{buttons}
 		>

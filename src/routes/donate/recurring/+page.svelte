@@ -43,7 +43,7 @@
 	});
 </script>
 
-<div class="flex flex-col place-items-center">
+<div class="flex grow flex-col place-items-center">
 	<p class="poppins-semibold mt-6 text-[#0d4a80]">RECURRING DONATION</p>
 	<div class="container md:p-5 flex gap-8 flex-wrap justify-center">
 		{#if stripe}
